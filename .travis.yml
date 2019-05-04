@@ -10,7 +10,7 @@ python:
 install:
   - pip install -r requirements_dev.txt
 script:
-  - pytest src/test_*.py --cov=handler --cov-fail-under=89
+  - pytest src/test_*.py --cov=handler --cov-fail-under=96.1
   - pycodestyle src/*py --ignore=E501
 after_success:
   - coveralls
