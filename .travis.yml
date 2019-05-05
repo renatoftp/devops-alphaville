@@ -12,5 +12,14 @@ install:
 script:
   - pytest src/test_*.py --cov=handler --cov-fail-under=95
   - pycodestyle src/*py --ignore=E501
-after_success:
+  - aws cloudformation validate-template --template-body file://cf.yaml
+_success:
   - coveralls
+deploy: aws cloudformation package --template-file cf.yaml --s3-bucket ${meetup31-cf-artifacts} --output-template-file out.yaml
+
+script
+  script: aws cloudformation deploy --template-file out.yaml --stack-name devops-alphaville --capabilities CAPABILITY_IAM
+  skip_cleanup: true
+  on:
+    all_branches: true
+    python: "3.6"
